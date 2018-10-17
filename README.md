@@ -4,7 +4,7 @@ aidjek Infra repository
 HomeWork #3
 
 bastion_IP = 35.204.164.162
-someinternalhost_IP = 10.156.0.3
+someinternalhost_IP = 10.164.0.3
 
 Для решения самостоятельного задания нужно сделать следующее:
 
