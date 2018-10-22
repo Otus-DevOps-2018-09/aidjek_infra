@@ -3,7 +3,7 @@ aidjek Infra repository
 
 HomeWork #4
 
-testapp_IP = 35.233.64.13
+testapp_IP = 35.233.64.13  
 testapp_port = 9292
 
 Created [https://www.googleapis.com/compute/v1/projects/aidjek-infrastructure/zones/europe-west1-b/instances/reddit-app].
@@ -23,10 +23,14 @@ gcloud compute firewall-rules create default-puma-server \
  --rules tcp:9292
 ```
 
-Creating firewall...⠼Created [https://www.googleapis.com/compute/v1/projects/aidjek-infrastructure/global/firewalls/default-puma-server].
-Creating firewall...done.
-NAME                 NETWORK  DIRECTION  PRIORITY  ALLOW     DENY  DISABLED
-default-puma-server  default  INGRESS    1000      tcp:9292        False
+Creating firewall...  
+Created [https://www.googleapis.com/compute/v1/projects/aidjek-infrastructure/global/firewalls/default-puma-server].  
+Creating firewall...done.  
+
+
+| NAME                | NETWORK | DIRECTION | PRIORITY | ALLOW    | DENY  | DISABLED  |
+|------------|----------------|--------------|-------------|-------------|--------------|---------|
+| default-puma-server | default | INGRESS   | 1000     | tcp:9292 |  | False |
 
 ```
 gcloud compute instances create reddit-app-tmp \
@@ -41,14 +45,14 @@ gcloud compute instances create reddit-app-tmp \
 
 Created [https://www.googleapis.com/compute/v1/projects/aidjek-infrastructure/zones/europe-north1-b/instances/reddit-app-tmp].
 
-| NAME       | ZONE           | MACHINE_TYPE | PREEMPTIBLE | INTERNAL_IP | EXTERNAL_IP  | STATUS  |
+| NAME          | ZONE            | MACHINE_TYPE | PREEMPTIBLE | INTERNAL_IP | EXTERNAL_IP  | STATUS  |
 |------------|----------------|--------------|-------------|-------------|--------------|---------|
 | reddit-app-tmp | europe-west1-b | g1-small     |             | 10.166.0.2  | 35.228.132.145 | RUNNING |
 
 
 HomeWork #3
 
-bastion_IP = 35.204.164.162
+bastion_IP = 35.204.164.162  
 someinternalhost_IP = 10.164.0.3
 
 Для решения самостоятельного задания нужно сделать следующее:
