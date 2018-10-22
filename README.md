@@ -7,15 +7,14 @@ testapp_IP = 35.233.64.13
 testapp_port = 9292
 
 Created [https://www.googleapis.com/compute/v1/projects/aidjek-infrastructure/zones/europe-west1-b/instances/reddit-app].
-NAME        ZONE            MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP   STATUS
-reddit-app  europe-west1-b  g1-small                   10.132.0.2   35.233.64.13  RUNNING
 
 | NAME       | ZONE           | MACHINE_TYPE | PREEMPTIBLE | INTERNAL_IP | EXTERNAL_IP  | STATUS  |
 |------------|----------------|--------------|-------------|-------------|--------------|---------|
 | reddit-app | europe-west1-b | g1-small     |             | 10.132.0.2  | 35.233.64.13 | RUNNING |
 
 ```
-gcloud compute firewall-rules create default-puma-server \                       --network default \
+gcloud compute firewall-rules create default-puma-server \ 
+ --network default \
  --priority 1000 \
  --direction ingress \
  --action allow \
@@ -41,10 +40,10 @@ gcloud compute instances create reddit-app-tmp \
  ```
 
 Created [https://www.googleapis.com/compute/v1/projects/aidjek-infrastructure/zones/europe-north1-b/instances/reddit-app-tmp].
-NAME            ZONE             MACHINE_TYPE  PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP     STATUS
-reddit-app-tmp  europe-north1-b  g1-small                   10.166.0.2   35.228.132.145  RUNNING
 
-
+| NAME       | ZONE           | MACHINE_TYPE | PREEMPTIBLE | INTERNAL_IP | EXTERNAL_IP  | STATUS  |
+|------------|----------------|--------------|-------------|-------------|--------------|---------|
+| reddit-app-tmp | europe-west1-b | g1-small     |             | 10.166.0.2  | 35.228.132.145 | RUNNING |
 
 
 HomeWork #3
