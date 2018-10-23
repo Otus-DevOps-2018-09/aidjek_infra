@@ -1,0 +1,37 @@
+{
+    "variables": {
+        "project_id": "aidjek-infrastructure",
+        "source_image_family": "reddit-base",
+        "machine_type": "g1-small",
+        "disk_size": "12",
+        "network": "default",
+        "network_tags": "puma-server"
+    },
+    "builders": [
+        {
+            "type": "googlecompute",
+            "project_id": "{{user `project_id`}}",
+            "image_name": "reddit-full-{{timestamp}}",
+            "image_family": "reddit-full",
+            "source_image_family": "{{user `source_image_family`}}",
+            "zone": "europe-west1-b",
+            "ssh_username": "appuser",
+            "machine_type": "{{user `machine_type`}}",
+            "disk_size": "{{user `disk_size`}}",
+            "network": "{{user `network`}}",
+            "tags": "{{user `network_tags`}}"
+        }
+    ],
+    "provisioners": [
+        {
+            "type": "file",
+            "source": "files/puma-server.service",
+            "destination": "/home/appuser/"
+        },
+        {
+            "type": "shell",
+            "script": "scripts/enable_puma.sh",
+            "execute_command": "sudo {{.Path}}"
+        }
+    ]
+}
