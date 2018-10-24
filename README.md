@@ -2,6 +2,446 @@
 
 aidjek Infra repository
 
+## HomeWork #6
+
+When we're using Input variables, we can destroy and create instance again, using all defined input variables.
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform destroy                    google_compute_firewall.firewall_puma: Refreshing state... (ID: allow-puma-default)
+google_compute_instance.app: Refreshing state... (ID: reddit-app)
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  - google_compute_firewall.firewall_puma
+
+  - google_compute_instance.app
+
+
+Plan: 0 to add, 0 to change, 2 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+google_compute_firewall.firewall_puma: Destroying... (ID: allow-puma-default)
+google_compute_instance.app: Destroying... (ID: reddit-app)
+google_compute_firewall.firewall_puma: Still destroying... (ID: allow-puma-default, 10s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 10s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 20s elapsed)
+google_compute_firewall.firewall_puma: Still destroying... (ID: allow-puma-default, 20s elapsed)
+google_compute_firewall.firewall_puma: Destruction complete after 21s
+google_compute_instance.app: Still destroying... (ID: reddit-app, 30s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 40s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 50s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m0s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m10s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m20s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m30s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m40s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m50s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 2m0s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 2m10s elapsed)
+google_compute_instance.app: Destruction complete after 2m10s
+
+Destroy complete! Resources: 2 destroyed.
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform plan                       Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + google_compute_firewall.firewall_puma
+      id:                                                  <computed>
+      allow.#:                                             "1"
+      allow.931060522.ports.#:                             "1"
+      allow.931060522.ports.0:                             "9292"
+      allow.931060522.protocol:                            "tcp"
+      destination_ranges.#:                                <computed>
+      name:                                                "allow-puma-default"
+      network:                                             "default"
+      priority:                                            "1000"
+      project:                                             <computed>
+      self_link:                                           <computed>
+      source_ranges.#:                                     "1"
+      source_ranges.1080289494:                            "0.0.0.0/0"
+      target_tags.#:                                       "1"
+      target_tags.1799682348:                              "reddit-app"
+
+  + google_compute_instance.app
+      id:                                                  <computed>
+      boot_disk.#:                                         "1"
+      boot_disk.0.auto_delete:                             "true"
+      boot_disk.0.device_name:                             <computed>
+      boot_disk.0.disk_encryption_key_sha256:              <computed>
+      boot_disk.0.initialize_params.#:                     "1"
+      boot_disk.0.initialize_params.0.image:               "reddit-base"
+      can_ip_forward:                                      "false"
+      cpu_platform:                                        <computed>
+      create_timeout:                                      "4"
+      instance_id:                                         <computed>
+      label_fingerprint:                                   <computed>
+      machine_type:                                        "g1-small"
+      metadata.%:                                          "1"
+      metadata.ssh-keys:                                   "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+      metadata_fingerprint:                                <computed>
+      name:                                                "reddit-app"
+      network_interface.#:                                 "1"
+      network_interface.0.access_config.#:                 "1"
+      network_interface.0.access_config.0.assigned_nat_ip: <computed>
+      network_interface.0.access_config.0.nat_ip:          <computed>
+      network_interface.0.address:                         <computed>
+      network_interface.0.name:                            <computed>
+      network_interface.0.network:                         "default"
+      network_interface.0.network_ip:                      <computed>
+      network_interface.0.subnetwork_project:              <computed>
+      project:                                             <computed>
+      scheduling.#:                                        <computed>
+      self_link:                                           <computed>
+      tags.#:                                              "1"
+      tags.1799682348:                                     "reddit-app"
+      tags_fingerprint:                                    <computed>
+      zone:                                                "europe-west1-b"
+
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform apply --auto-approve=true  google_compute_firewall.firewall_puma: Creating...
+  allow.#:                  "" => "1"
+  allow.931060522.ports.#:  "" => "1"
+  allow.931060522.ports.0:  "" => "9292"
+  allow.931060522.protocol: "" => "tcp"
+  destination_ranges.#:     "" => "<computed>"
+  name:                     "" => "allow-puma-default"
+  network:                  "" => "default"
+  priority:                 "" => "1000"
+  project:                  "" => "<computed>"
+  self_link:                "" => "<computed>"
+  source_ranges.#:          "" => "1"
+  source_ranges.1080289494: "" => "0.0.0.0/0"
+  target_tags.#:            "" => "1"
+  target_tags.1799682348:   "" => "reddit-app"
+google_compute_instance.app: Creating...
+  boot_disk.#:                                         "" => "1"
+  boot_disk.0.auto_delete:                             "" => "true"
+  boot_disk.0.device_name:                             "" => "<computed>"
+  boot_disk.0.disk_encryption_key_sha256:              "" => "<computed>"
+  boot_disk.0.initialize_params.#:                     "" => "1"
+  boot_disk.0.initialize_params.0.image:               "" => "reddit-base"
+  can_ip_forward:                                      "" => "false"
+  cpu_platform:                                        "" => "<computed>"
+  create_timeout:                                      "" => "4"
+  instance_id:                                         "" => "<computed>"
+  label_fingerprint:                                   "" => "<computed>"
+  machine_type:                                        "" => "g1-small"
+  metadata.%:                                          "" => "1"
+  metadata.ssh-keys:                                   "" => "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+  metadata_fingerprint:                                "" => "<computed>"
+  name:                                                "" => "reddit-app"
+  network_interface.#:                                 "" => "1"
+  network_interface.0.access_config.#:                 "" => "1"
+  network_interface.0.access_config.0.assigned_nat_ip: "" => "<computed>"
+  network_interface.0.access_config.0.nat_ip:          "" => "<computed>"
+  network_interface.0.address:                         "" => "<computed>"
+  network_interface.0.name:                            "" => "<computed>"
+  network_interface.0.network:                         "" => "default"
+  network_interface.0.network_ip:                      "" => "<computed>"
+  network_interface.0.subnetwork_project:              "" => "<computed>"
+  project:                                             "" => "<computed>"
+  scheduling.#:                                        "" => "<computed>"
+  self_link:                                           "" => "<computed>"
+  tags.#:                                              "" => "1"
+  tags.1799682348:                                     "" => "reddit-app"
+  tags_fingerprint:                                    "" => "<computed>"
+  zone:                                                "" => "europe-west1-b"
+google_compute_instance.app: Still creating... (10s elapsed)
+google_compute_firewall.firewall_puma: Still creating... (10s elapsed)
+google_compute_instance.app: Still creating... (20s elapsed)
+google_compute_firewall.firewall_puma: Still creating... (20s elapsed)
+google_compute_firewall.firewall_puma: Creation complete after 23s (ID: allow-puma-default)
+google_compute_instance.app: Still creating... (30s elapsed)
+google_compute_instance.app: Still creating... (40s elapsed)
+google_compute_instance.app: Still creating... (50s elapsed)
+google_compute_instance.app: Provisioning with 'file'...
+google_compute_instance.app: Provisioning with 'remote-exec'...
+google_compute_instance.app (remote-exec): Connecting to remote host via SSH...
+google_compute_instance.app (remote-exec):   Host: 35.241.194.159
+google_compute_instance.app (remote-exec):   User: appuser
+google_compute_instance.app (remote-exec):   Password: false
+google_compute_instance.app (remote-exec):   Private key: true
+google_compute_instance.app (remote-exec):   SSH Agent: false
+google_compute_instance.app (remote-exec):   Checking Host Key: false
+google_compute_instance.app (remote-exec): Connected!
+google_compute_instance.app (remote-exec): Cloning into '/home/appuser/reddit'...
+google_compute_instance.app (remote-exec): remote: Enumerating objects: 308, done.
+google_compute_instance.app (remote-exec): Receiving objects:   0% (1/308)
+google_compute_instance.app (remote-exec): Receiving objects:   1% (4/308)
+google_compute_instance.app (remote-exec): Receiving objects:   2% (7/308)
+google_compute_instance.app (remote-exec): Receiving objects:   3% (10/308)
+google_compute_instance.app (remote-exec): Receiving objects:   4% (13/308)
+google_compute_instance.app (remote-exec): Receiving objects:   5% (16/308)
+google_compute_instance.app (remote-exec): Receiving objects:   6% (19/308)
+google_compute_instance.app (remote-exec): Receiving objects:   7% (22/308)
+google_compute_instance.app (remote-exec): Receiving objects:   8% (25/308)
+google_compute_instance.app (remote-exec): Receiving objects:   9% (28/308)
+google_compute_instance.app (remote-exec): Receiving objects:  10% (31/308)
+google_compute_instance.app (remote-exec): Receiving objects:  11% (34/308)
+google_compute_instance.app (remote-exec): Receiving objects:  12% (37/308)
+google_compute_instance.app (remote-exec): Receiving objects:  13% (41/308)
+google_compute_instance.app (remote-exec): Receiving objects:  14% (44/308)
+google_compute_instance.app (remote-exec): Receiving objects:  15% (47/308)
+google_compute_instance.app (remote-exec): Receiving objects:  16% (50/308)
+google_compute_instance.app (remote-exec): Receiving objects:  17% (53/308)
+google_compute_instance.app (remote-exec): Receiving objects:  18% (56/308)
+google_compute_instance.app (remote-exec): Receiving objects:  19% (59/308)
+google_compute_instance.app (remote-exec): Receiving objects:  20% (62/308)
+google_compute_instance.app (remote-exec): Receiving objects:  21% (65/308)
+google_compute_instance.app (remote-exec): Receiving objects:  22% (68/308)
+google_compute_instance.app (remote-exec): Receiving objects:  23% (71/308)
+google_compute_instance.app (remote-exec): Receiving objects:  24% (74/308)
+google_compute_instance.app (remote-exec): Receiving objects:  25% (77/308)
+google_compute_instance.app (remote-exec): remote: Total 308 (delta 0), reused 0 (delta 0), pack-reused 308
+google_compute_instance.app (remote-exec): Receiving objects:  26% (81/308)
+google_compute_instance.app (remote-exec): Receiving objects:  27% (84/308)
+google_compute_instance.app (remote-exec): Receiving objects:  28% (87/308)
+google_compute_instance.app (remote-exec): Receiving objects:  29% (90/308)
+google_compute_instance.app (remote-exec): Receiving objects:  30% (93/308)
+google_compute_instance.app (remote-exec): Receiving objects:  31% (96/308)
+google_compute_instance.app (remote-exec): Receiving objects:  32% (99/308)
+google_compute_instance.app (remote-exec): Receiving objects:  33% (102/308)
+google_compute_instance.app (remote-exec): Receiving objects:  34% (105/308)
+google_compute_instance.app (remote-exec): Receiving objects:  35% (108/308)
+google_compute_instance.app (remote-exec): Receiving objects:  36% (111/308)
+google_compute_instance.app (remote-exec): Receiving objects:  37% (114/308)
+google_compute_instance.app (remote-exec): Receiving objects:  38% (118/308)
+google_compute_instance.app (remote-exec): Receiving objects:  39% (121/308)
+google_compute_instance.app (remote-exec): Receiving objects:  40% (124/308)
+google_compute_instance.app (remote-exec): Receiving objects:  41% (127/308)
+google_compute_instance.app (remote-exec): Receiving objects:  42% (130/308)
+google_compute_instance.app (remote-exec): Receiving objects:  43% (133/308)
+google_compute_instance.app (remote-exec): Receiving objects:  44% (136/308)
+google_compute_instance.app (remote-exec): Receiving objects:  45% (139/308)
+google_compute_instance.app (remote-exec): Receiving objects:  46% (142/308)
+google_compute_instance.app (remote-exec): Receiving objects:  47% (145/308)
+google_compute_instance.app (remote-exec): Receiving objects:  48% (148/308)
+google_compute_instance.app (remote-exec): Receiving objects:  49% (151/308)
+google_compute_instance.app (remote-exec): Receiving objects:  50% (154/308)
+google_compute_instance.app (remote-exec): Receiving objects:  51% (158/308)
+google_compute_instance.app (remote-exec): Receiving objects:  52% (161/308)
+google_compute_instance.app (remote-exec): Receiving objects:  53% (164/308)
+google_compute_instance.app (remote-exec): Receiving objects:  54% (167/308)
+google_compute_instance.app (remote-exec): Receiving objects:  55% (170/308)
+google_compute_instance.app (remote-exec): Receiving objects:  56% (173/308)
+google_compute_instance.app (remote-exec): Receiving objects:  57% (176/308)
+google_compute_instance.app (remote-exec): Receiving objects:  58% (179/308)
+google_compute_instance.app (remote-exec): Receiving objects:  59% (182/308)
+google_compute_instance.app (remote-exec): Receiving objects:  60% (185/308)
+google_compute_instance.app (remote-exec): Receiving objects:  61% (188/308)
+google_compute_instance.app (remote-exec): Receiving objects:  62% (191/308)
+google_compute_instance.app (remote-exec): Receiving objects:  63% (195/308)
+google_compute_instance.app (remote-exec): Receiving objects:  64% (198/308)
+google_compute_instance.app (remote-exec): Receiving objects:  65% (201/308)
+google_compute_instance.app (remote-exec): Receiving objects:  66% (204/308)
+google_compute_instance.app (remote-exec): Receiving objects:  67% (207/308)
+google_compute_instance.app (remote-exec): Receiving objects:  68% (210/308)
+google_compute_instance.app (remote-exec): Receiving objects:  69% (213/308)
+google_compute_instance.app (remote-exec): Receiving objects:  70% (216/308)
+google_compute_instance.app (remote-exec): Receiving objects:  71% (219/308)
+google_compute_instance.app (remote-exec): Receiving objects:  72% (222/308)
+google_compute_instance.app (remote-exec): Receiving objects:  73% (225/308)
+google_compute_instance.app (remote-exec): Receiving objects:  74% (228/308)
+google_compute_instance.app (remote-exec): Receiving objects:  75% (231/308)
+google_compute_instance.app (remote-exec): Receiving objects:  76% (235/308)
+google_compute_instance.app (remote-exec): Receiving objects:  77% (238/308)
+google_compute_instance.app (remote-exec): Receiving objects:  78% (241/308)
+google_compute_instance.app (remote-exec): Receiving objects:  79% (244/308)
+google_compute_instance.app (remote-exec): Receiving objects:  80% (247/308)
+google_compute_instance.app (remote-exec): Receiving objects:  81% (250/308)
+google_compute_instance.app (remote-exec): Receiving objects:  82% (253/308)
+google_compute_instance.app (remote-exec): Receiving objects:  83% (256/308)
+google_compute_instance.app (remote-exec): Receiving objects:  84% (259/308)
+google_compute_instance.app (remote-exec): Receiving objects:  85% (262/308)
+google_compute_instance.app (remote-exec): Receiving objects:  86% (265/308)
+google_compute_instance.app (remote-exec): Receiving objects:  87% (268/308)
+google_compute_instance.app (remote-exec): Receiving objects:  88% (272/308)
+google_compute_instance.app (remote-exec): Receiving objects:  89% (275/308)
+google_compute_instance.app (remote-exec): Receiving objects:  90% (278/308)
+google_compute_instance.app (remote-exec): Receiving objects:  91% (281/308)
+google_compute_instance.app (remote-exec): Receiving objects:  92% (284/308)
+google_compute_instance.app (remote-exec): Receiving objects:  93% (287/308)
+google_compute_instance.app (remote-exec): Receiving objects:  94% (290/308)
+google_compute_instance.app (remote-exec): Receiving objects:  95% (293/308)
+google_compute_instance.app (remote-exec): Receiving objects:  96% (296/308)
+google_compute_instance.app (remote-exec): Receiving objects:  97% (299/308)
+google_compute_instance.app (remote-exec): Receiving objects:  98% (302/308)
+google_compute_instance.app (remote-exec): Receiving objects:  99% (305/308)
+google_compute_instance.app (remote-exec): Receiving objects: 100% (308/308)
+google_compute_instance.app (remote-exec): Receiving objects: 100% (308/308), 52.01 KiB | 0 bytes/s, done.
+google_compute_instance.app (remote-exec): Resolving deltas:   0% (0/167)
+google_compute_instance.app (remote-exec): Resolving deltas:   1% (2/167)
+google_compute_instance.app (remote-exec): Resolving deltas:   4% (7/167)
+google_compute_instance.app (remote-exec): Resolving deltas:   7% (12/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  10% (17/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  11% (19/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  14% (24/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  15% (26/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  16% (28/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  19% (32/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  20% (34/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  22% (37/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  26% (45/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  30% (51/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  31% (52/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  32% (54/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  34% (57/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  37% (63/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  44% (75/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  46% (78/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  48% (81/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  49% (82/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  50% (84/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  52% (87/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  53% (89/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  54% (91/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  56% (94/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  58% (97/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  61% (102/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  62% (104/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  64% (107/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  65% (109/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  67% (113/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  69% (116/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  70% (117/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  71% (119/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  72% (121/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  73% (122/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  74% (124/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  80% (135/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  83% (139/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  86% (144/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  87% (146/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  92% (154/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  93% (156/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  95% (159/167)
+google_compute_instance.app (remote-exec): Resolving deltas:  96% (161/167)
+google_compute_instance.app (remote-exec): Resolving deltas: 100% (167/167)
+google_compute_instance.app (remote-exec): Resolving deltas: 100% (167/167), done.
+google_compute_instance.app (remote-exec): Checking connectivity... done.
+google_compute_instance.app (remote-exec): Warning: the running version of Bundler is older than the version that created the lockfile. We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.
+google_compute_instance.app (remote-exec):
+google_compute_instance.app (remote-exec): Fetching gem metadata from https://rubygems.org/.
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): Fetching version metadata from https://rubygems.org/.
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app: Still creating... (1m0s elapsed)
+google_compute_instance.app (remote-exec): Installing rake 12.0.0
+google_compute_instance.app (remote-exec): Installing net-ssh 4.1.0
+google_compute_instance.app (remote-exec): Installing bcrypt 3.1.11 with native extensions
+google_compute_instance.app (remote-exec): Installing bson 4.2.2 with native extensions
+google_compute_instance.app (remote-exec): Installing bson_ext 1.5.1 with native extensions
+google_compute_instance.app (remote-exec): Installing i18n 0.8.6
+google_compute_instance.app (remote-exec): Installing puma 3.10.0 with native extensions
+google_compute_instance.app: Still creating... (1m10s elapsed)
+google_compute_instance.app (remote-exec): Installing temple 0.8.0
+google_compute_instance.app (remote-exec): Installing tilt 2.0.8
+google_compute_instance.app (remote-exec): Installing json 2.1.0 with native extensions
+google_compute_instance.app (remote-exec): Installing mustermann 1.0.2
+google_compute_instance.app (remote-exec): Installing rack 2.0.5
+google_compute_instance.app (remote-exec): Using bundler 1.11.2
+google_compute_instance.app (remote-exec): Installing net-scp 1.2.1
+google_compute_instance.app (remote-exec): Installing mongo 2.4.3
+google_compute_instance.app (remote-exec): Installing haml 5.0.2
+google_compute_instance.app (remote-exec): Installing rack-protection 2.0.2
+google_compute_instance.app (remote-exec): Installing sshkit 1.14.0
+google_compute_instance.app (remote-exec): Installing sinatra 2.0.2
+google_compute_instance.app (remote-exec): Installing airbrussh 1.3.0
+google_compute_instance.app (remote-exec): Installing capistrano 3.9.0
+google_compute_instance.app (remote-exec): Installing capistrano-bundler 1.2.0
+google_compute_instance.app (remote-exec): Installing capistrano-rvm 0.1.2
+google_compute_instance.app (remote-exec): Installing capistrano3-puma 3.1.1
+google_compute_instance.app (remote-exec): Bundle complete! 11 Gemfile dependencies, 24 gems now installed.
+google_compute_instance.app (remote-exec): Use `bundle show [gemname]` to see where a bundled gem is installed.
+google_compute_instance.app (remote-exec): Post-install message from capistrano3-puma:
+
+google_compute_instance.app (remote-exec):     All plugins need to be explicitly installed with install_plugin.
+google_compute_instance.app (remote-exec):     Please see README.md
+google_compute_instance.app (remote-exec):   Created symlink from /etc/systemd/system/multi-user.target.wants/puma.service to /etc/systemd/system/puma.service.
+google_compute_instance.app: Creation complete after 1m17s (ID: reddit-app)
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+app_external_ip = 35.241.194.159
+```
+
+`terraform fmt` shows which files were changed
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform fmt                         main.tf
+variables.tf
+```
+
+if you have several metadata ssh_keys, terraform will use the last one:
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform apply --auto-approve=true   google_compute_instance.app: Refreshing state... (ID: reddit-app)
+google_compute_firewall.firewall_puma: Refreshing state... (ID: allow-puma-default)
+google_compute_instance.app: Modifying... (ID: reddit-app)
+  metadata.ssh-keys: "appuser1:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n" => "appuser25:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+google_compute_instance.app: Still modifying... (ID: reddit-app, 10s elapsed)
+google_compute_instance.app: Modifications complete after 13s (ID: reddit-app)
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+app_external_ip = 35.241.194.159
+```
+
+after insert new ssh key from web, terraform will rewrite it with current configuration
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform apply --auto-approve=true   google_compute_instance.app: Refreshing state... (ID: reddit-app)
+google_compute_firewall.firewall_puma: Refreshing state... (ID: allow-puma-default)
+google_compute_instance.app: Modifying... (ID: reddit-app)
+  metadata.ssh-keys: "appuser25:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\nappuser_web:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser_web" => "appuser25:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+google_compute_instance.app: Still modifying... (ID: reddit-app, 10s elapsed)
+google_compute_instance.app: Modifications complete after 12s (ID: reddit-app)
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+app_external_ip = 35.241.194.159
+```
+
 ## HomeWork #5
 
 Create new instance, based on the image made by packer.
