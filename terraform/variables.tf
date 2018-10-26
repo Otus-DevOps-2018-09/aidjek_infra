@@ -20,6 +20,10 @@ variable "disk_image" {
   description = "Disk Image"
 }
 
+variable "app_disk_image" {
+  description = "Disk Image"
+}
+
 variable "private_key_path" {
   description = "Path to the private key, used for ssh connection"
 }
