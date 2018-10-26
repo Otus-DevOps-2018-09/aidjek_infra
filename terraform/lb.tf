@@ -7,7 +7,10 @@ resource "google_compute_instance_group" "ruby_app" {
     port = 9292
   }
 
-  instances = ["${google_compute_instance.app.*.self_link}"]
+  instances = [
+    "${google_compute_instance.app.*.self_link}",
+    "${google_compute_instance.app2.*.self_link}"
+  ]
 }
 
 resource "google_compute_health_check" "ruby_health" {
