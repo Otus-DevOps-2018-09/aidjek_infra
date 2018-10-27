@@ -1,3 +1,7 @@
+variable "instance_count" {
+  default = "2"
+}
+
 variable "project" {
   description = "Project ID"
 }
@@ -5,11 +9,6 @@ variable "project" {
 variable "region" {
   description = "Region"
   default     = "europe-west1"
-}
-
-variable "zone" {
-  description = "Zone"
-  default     = "europe-west1-b"
 }
 
 variable "public_key_path" {

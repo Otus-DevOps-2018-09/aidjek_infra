@@ -1,16 +1,14 @@
 resource "google_compute_instance_group" "ruby_app" {
-  name = "ruby-web"
-  zone = "${var.zone}"
+  count = "${var.instance_count}"
+  name  = "ruby-web-${count.index}"
+  zone  = "europe-west${count.index + 1}-b"
 
   named_port {
     name = "puma-webserver"
     port = 9292
   }
 
-  instances = [
-    "${google_compute_instance.app.*.self_link}",
-    "${google_compute_instance.app2.*.self_link}"
-  ]
+  instances = ["${element(google_compute_instance.app.*.self_link, count.index)}"]
 }
 
 resource "google_compute_health_check" "ruby_health" {
@@ -31,7 +29,7 @@ resource "google_compute_backend_service" "ruby_backend" {
   health_checks = ["${google_compute_health_check.ruby_health.self_link}"]
 
   backend {
-    group = "${google_compute_instance_group.ruby_app.self_link}"
+    group = "${element(google_compute_instance_group.ruby_app.*.self_link, count.index)}"
   }
 }
 
