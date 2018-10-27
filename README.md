@@ -209,7 +209,7 @@ Plan: 10 to add, 0 to change, 0 to destroy.
 
 попытка создания loadbalancer'a не используя backend'ы, а сделать через target-pool
   <https://www.terraform.io/docs/providers/google/r/compute_target_pool.html>
-была неудачной - файл lb_alternative.tf.example
+была неудачной - файл lb_alternative.tf.example , commit [40f9bfb]
 
 ```bash
 > ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform plan                                   Refreshing Terraform state in-memory prior to plan...
