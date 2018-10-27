@@ -349,7 +349,8 @@ Terraform will perform the following actions:
 Plan: 6 to add, 0 to change, 0 to destroy.
 ```
 
-неудачная - полный лог https://pastebin.com/raw/s31P55TZ
+неудачная - полный лог <https://pastebin.com/raw/s31P55TZ>
+
 ```bash
 Error: Error applying plan:
 
