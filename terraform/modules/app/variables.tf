@@ -36,3 +36,7 @@ variable "private_key_path" {
   description = "Path to the private key, used for ssh connection"
   default     = "/Users/aidjek/.ssh/appuser"
 }
+
+variable "db_ip" {
+  description = "Environment DATABASE_URL"
+}
