@@ -18,7 +18,8 @@ resource "google_compute_instance" "db" {
   metadata {
     sshKeys = "appuser:${file(var.public_key_path)}"
   }
-provisioner "remote-exec" {
+
+  provisioner "remote-exec" {
     script = "${path.module}/files/deploy.sh"
   }
 }

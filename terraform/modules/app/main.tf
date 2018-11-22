@@ -1,6 +1,7 @@
 data "template_file" "puma_service" {
   template = "${file("${path.module}/files/puma.service.template")}"
-   vars {
+
+  vars {
     db_ip = "${var.db_ip}"
   }
 }
@@ -28,12 +29,14 @@ resource "google_compute_instance" "app" {
   metadata {
     sshKeys = "appuser:${file(var.public_key_path)}"
   }
+
   provisioner "remote-exec" {
     inline = [
       "echo '${data.template_file.puma_service.rendered}' > /tmp/puma.service",
     ]
   }
-   provisioner "remote-exec" {
+
+  provisioner "remote-exec" {
     script = "${path.module}/files/deploy.sh"
   }
 }

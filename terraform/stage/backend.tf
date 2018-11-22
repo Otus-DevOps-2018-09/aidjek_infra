@@ -1,6 +1,6 @@
 terraform {
   backend "gcs" {
-    bucket  = "aidjek-stage-bucket"
-    prefix  = "stage-state"
+    bucket = "aidjek-stage-bucket"
+    prefix = "stage-state"
   }
 }
