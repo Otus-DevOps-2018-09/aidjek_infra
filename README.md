@@ -2,9 +2,25 @@
 
 aidjek Infra repository
 
+## HomeWork #7
+
+### Additional work (*) - HW7
+
+#### Terraform Remote Backend with GCS Bucket
+
+Одновременное применения конфигураций приводит к ошибке
+> Error locking state: Error acquiring the state lock: writing "gs://aidjek-stage-bucket/stage-state/default.tflock"
+> failed: googleapi: Error 412: Precondition Failed, conditionNotMet
+
+#### Terraform Provisioners
+
+В каждом из модулей db и app используются provisioners.
+Для настройки переменной `DATABASE_URL` добавлен шаблон для systemd unit `puma.service` в модуле app.
+В модуле db provisioner заменяет IP который использует MongoDB.
+
 ## HomeWork #6
 
-### Additional work (**)
+### Additional work (**) - HW6
 
 добавление loadbalancer'a с одним текущим инстансом, описано коммитом [9b4cba6]
 
@@ -366,7 +382,7 @@ any resources that successfully completed. Please address the error
 above and apply again to incrementally change your infrastructure.
 ```
 
-### Additional work (*)
+### Additional work (*) - HW6
 
 при добавлении ещё одного ключа в metadata, он затирает предыдущее значение и оставляет только одно.
 

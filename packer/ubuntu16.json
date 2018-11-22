@@ -3,7 +3,7 @@
         "project_id": "aidjek-infrastructure",
         "source_image_family": "ubuntu-1604-lts",
         "machine_type": "",
-        "image_description": "",
+        "image_description": "Reddit Application on Ruby and MongoDB, started from puma",
         "disk_size": "10",
         "network": "",
         "network_tags": ""

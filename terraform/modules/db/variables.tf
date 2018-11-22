@@ -4,6 +4,7 @@ variable "instance_count" {
 
 variable "project" {
   description = "Project ID"
+  default     = "aidjek-infrastructure"
 }
 
 variable "region" {
@@ -23,11 +24,7 @@ variable "machine_type" {
 
 variable "public_key_path" {
   description = "Path to the public key, used for ssh access"
-}
-
-variable "app_disk_image" {
-  description = "Disk Image for reddit app"
-  default     = "reddit-app-base"
+  default     = "/Users/aidjek/.ssh/appuser.pub"
 }
 
 variable "db_disk_image" {
@@ -37,4 +34,5 @@ variable "db_disk_image" {
 
 variable "private_key_path" {
   description = "Path to the private key, used for ssh connection"
+  default     = "/Users/aidjek/.ssh/appuser"
 }
