@@ -1,4 +1,4 @@
-project = "aidjek-infrastructure"
-public_key_path = "/Users/aidjek/.ssh/appuser.pub"
-private_key_path = "/Users/aidjek/.ssh/appuser"
+project = "none"
+public_key_path = "~/.ssh/appuser.pub"
+private_key_path = "~/.ssh/appuser"
 disk_image = "reddit-base"
