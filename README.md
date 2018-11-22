@@ -2,6 +2,673 @@
 
 aidjek Infra repository
 
+## HomeWork #6
+
+### Additional work (**)
+
+добавление loadbalancer'a с одним текущим инстансом, описано коммитом [9b4cba6]
+
+добавление ещё одного инстанса в loadbalancer, путём копирования кода описано [a818154]
+
+добавление переменной count, которая позволяет добавлять множество интансов, используя меньше кода - коммит [a6c1fc4]
+Весь вывод консоли - <https://pastebin.com/raw/0eHY4vgJ>
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform plan                                  Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + google_compute_backend_service.ruby_backend
+      id:                                                  <computed>
+      backend.#:                                           "1"
+      backend.~4131764219.balancing_mode:                  "UTILIZATION"
+      backend.~4131764219.capacity_scaler:                 "1"
+      backend.~4131764219.description:                     ""
+      backend.~4131764219.group:                           "${element(google_compute_instance_group.ruby_app.*.self_link, count.index)}"
+      backend.~4131764219.max_rate:                        ""
+      backend.~4131764219.max_rate_per_instance:           ""
+      backend.~4131764219.max_utilization:                 "0.8"
+      connection_draining_timeout_sec:                     "300"
+      enable_cdn:                                          "false"
+      fingerprint:                                         <computed>
+      health_checks.#:                                     <computed>
+      name:                                                "ruby-backend"
+      port_name:                                           "puma-webserver"
+      project:                                             <computed>
+      protocol:                                            "HTTP"
+      self_link:                                           <computed>
+      session_affinity:                                    <computed>
+      timeout_sec:                                         "10"
+
+  + google_compute_firewall.firewall_puma
+      id:                                                  <computed>
+      allow.#:                                             "1"
+      allow.931060522.ports.#:                             "1"
+      allow.931060522.ports.0:                             "9292"
+      allow.931060522.protocol:                            "tcp"
+      destination_ranges.#:                                <computed>
+      name:                                                "allow-puma-default"
+      network:                                             "default"
+      priority:                                            "1000"
+      project:                                             <computed>
+      self_link:                                           <computed>
+      source_ranges.#:                                     "1"
+      source_ranges.1080289494:                            "0.0.0.0/0"
+      target_tags.#:                                       "1"
+      target_tags.1799682348:                              "reddit-app"
+
+  + google_compute_global_forwarding_rule.ruby-forwarding
+      id:                                                  <computed>
+      ip_address:                                          <computed>
+      ip_protocol:                                         <computed>
+      label_fingerprint:                                   <computed>
+      name:                                                "ruby-forwarding"
+      port_range:                                          "80"
+      project:                                             <computed>
+      self_link:                                           <computed>
+      target:                                              "${google_compute_target_http_proxy.ruby_proxy.self_link}"
+
+  + google_compute_health_check.ruby_health
+      id:                                                  <computed>
+      check_interval_sec:                                  "3"
+      healthy_threshold:                                   "2"
+      name:                                                "ruby-health"
+      project:                                             <computed>
+      self_link:                                           <computed>
+      tcp_health_check.#:                                  "1"
+      tcp_health_check.0.port:                             "9292"
+      tcp_health_check.0.proxy_header:                     "NONE"
+      timeout_sec:                                         "1"
+      unhealthy_threshold:                                 "2"
+
+  + google_compute_instance.app[0]
+      id:                                                  <computed>
+      boot_disk.#:                                         "1"
+      boot_disk.0.auto_delete:                             "true"
+      boot_disk.0.device_name:                             <computed>
+      boot_disk.0.disk_encryption_key_sha256:              <computed>
+      boot_disk.0.initialize_params.#:                     "1"
+      boot_disk.0.initialize_params.0.image:               "reddit-base"
+      can_ip_forward:                                      "false"
+      cpu_platform:                                        <computed>
+      create_timeout:                                      "4"
+      instance_id:                                         <computed>
+      label_fingerprint:                                   <computed>
+      machine_type:                                        "g1-small"
+      metadata.%:                                          "1"
+      metadata.ssh-keys:                                   "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+      metadata_fingerprint:                                <computed>
+      name:                                                "reddit-app-0"
+      network_interface.#:                                 "1"
+      network_interface.0.access_config.#:                 "1"
+      network_interface.0.access_config.0.assigned_nat_ip: <computed>
+      network_interface.0.access_config.0.nat_ip:          <computed>
+      network_interface.0.address:                         <computed>
+      network_interface.0.name:                            <computed>
+      network_interface.0.network:                         "default"
+      network_interface.0.network_ip:                      <computed>
+      network_interface.0.subnetwork_project:              <computed>
+      project:                                             <computed>
+      scheduling.#:                                        <computed>
+      self_link:                                           <computed>
+      tags.#:                                              "1"
+      tags.1799682348:                                     "reddit-app"
+      tags_fingerprint:                                    <computed>
+      zone:                                                "europe-west1-b"
+
+  + google_compute_instance.app[1]
+      id:                                                  <computed>
+      boot_disk.#:                                         "1"
+      boot_disk.0.auto_delete:                             "true"
+      boot_disk.0.device_name:                             <computed>
+      boot_disk.0.disk_encryption_key_sha256:              <computed>
+      boot_disk.0.initialize_params.#:                     "1"
+      boot_disk.0.initialize_params.0.image:               "reddit-base"
+      can_ip_forward:                                      "false"
+      cpu_platform:                                        <computed>
+      create_timeout:                                      "4"
+      instance_id:                                         <computed>
+      label_fingerprint:                                   <computed>
+      machine_type:                                        "g1-small"
+      metadata.%:                                          "1"
+      metadata.ssh-keys:                                   "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+      metadata_fingerprint:                                <computed>
+      name:                                                "reddit-app-1"
+      network_interface.#:                                 "1"
+      network_interface.0.access_config.#:                 "1"
+      network_interface.0.access_config.0.assigned_nat_ip: <computed>
+      network_interface.0.access_config.0.nat_ip:          <computed>
+      network_interface.0.address:                         <computed>
+      network_interface.0.name:                            <computed>
+      network_interface.0.network:                         "default"
+      network_interface.0.network_ip:                      <computed>
+      network_interface.0.subnetwork_project:              <computed>
+      project:                                             <computed>
+      scheduling.#:                                        <computed>
+      self_link:                                           <computed>
+      tags.#:                                              "1"
+      tags.1799682348:                                     "reddit-app"
+      tags_fingerprint:                                    <computed>
+      zone:                                                "europe-west2-b"
+
+  + google_compute_instance_group.ruby_app[0]
+      id:                                                  <computed>
+      instances.#:                                         <computed>
+      name:                                                "ruby-web-0"
+      named_port.#:                                        "1"
+      named_port.0.name:                                   "puma-webserver"
+      named_port.0.port:                                   "9292"
+      network:                                             <computed>
+      project:                                             <computed>
+      self_link:                                           <computed>
+      size:                                                <computed>
+      zone:                                                "europe-west1-b"
+
+  + google_compute_instance_group.ruby_app[1]
+      id:                                                  <computed>
+      instances.#:                                         <computed>
+      name:                                                "ruby-web-1"
+      named_port.#:                                        "1"
+      named_port.0.name:                                   "puma-webserver"
+      named_port.0.port:                                   "9292"
+      network:                                             <computed>
+      project:                                             <computed>
+      self_link:                                           <computed>
+      size:                                                <computed>
+      zone:                                                "europe-west2-b"
+
+  + google_compute_target_http_proxy.ruby_proxy
+      id:                                                  <computed>
+      name:                                                "ruby-proxy"
+      project:                                             <computed>
+      proxy_id:                                            <computed>
+      self_link:                                           <computed>
+      url_map:                                             "${google_compute_url_map.ruby_url.self_link}"
+
+  + google_compute_url_map.ruby_url
+      id:                                                  <computed>
+      default_service:                                     "${google_compute_backend_service.ruby_backend.self_link}"
+      fingerprint:                                         <computed>
+      map_id:                                              <computed>
+      name:                                                "ruby-url"
+      project:                                             <computed>
+      self_link:                                           <computed>
+
+
+Plan: 10 to add, 0 to change, 0 to destroy.
+```
+
+попытка создания loadbalancer'a не используя backend'ы, а сделать через target-pool
+  <https://www.terraform.io/docs/providers/google/r/compute_target_pool.html>
+была неудачной - файл lb_alternative.tf.example , commit [40f9bfb]
+
+```bash
+> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform plan                                   Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + google_compute_firewall.firewall_puma
+      id:                                                  <computed>
+      allow.#:                                             "1"
+      allow.931060522.ports.#:                             "1"
+      allow.931060522.ports.0:                             "9292"
+      allow.931060522.protocol:                            "tcp"
+      destination_ranges.#:                                <computed>
+      name:                                                "allow-puma-default"
+      network:                                             "default"
+      priority:                                            "1000"
+      project:                                             <computed>
+      self_link:                                           <computed>
+      source_ranges.#:                                     "1"
+      source_ranges.1080289494:                            "0.0.0.0/0"
+      target_tags.#:                                       "1"
+      target_tags.1799682348:                              "reddit-app"
+
+  + google_compute_global_forwarding_rule.ruby-forwarding
+      id:                                                  <computed>
+      ip_address:                                          <computed>
+      ip_protocol:                                         <computed>
+      label_fingerprint:                                   <computed>
+      name:                                                "ruby-forwarding"
+      port_range:                                          "9292"
+      project:                                             <computed>
+      self_link:                                           <computed>
+      target:                                              "${google_compute_target_pool.ruby_cluster.self_link}"
+
+  + google_compute_http_health_check.ruby_http_port
+      id:                                                  <computed>
+      check_interval_sec:                                  "3"
+      healthy_threshold:                                   "2"
+      name:                                                "ruby-http-port"
+      port:                                                "9292"
+      project:                                             <computed>
+      request_path:                                        "/"
+      self_link:                                           <computed>
+      timeout_sec:                                         "1"
+      unhealthy_threshold:                                 "2"
+
+  + google_compute_instance.app[0]
+      id:                                                  <computed>
+      boot_disk.#:                                         "1"
+      boot_disk.0.auto_delete:                             "true"
+      boot_disk.0.device_name:                             <computed>
+      boot_disk.0.disk_encryption_key_sha256:              <computed>
+      boot_disk.0.initialize_params.#:                     "1"
+      boot_disk.0.initialize_params.0.image:               "reddit-base"
+      can_ip_forward:                                      "false"
+      cpu_platform:                                        <computed>
+      create_timeout:                                      "4"
+      instance_id:                                         <computed>
+      label_fingerprint:                                   <computed>
+      machine_type:                                        "g1-small"
+      metadata.%:                                          "1"
+      metadata.ssh-keys:                                   "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+      metadata_fingerprint:                                <computed>
+      name:                                                "reddit-app-0"
+      network_interface.#:                                 "1"
+      network_interface.0.access_config.#:                 "1"
+      network_interface.0.access_config.0.assigned_nat_ip: <computed>
+      network_interface.0.access_config.0.nat_ip:          <computed>
+      network_interface.0.address:                         <computed>
+      network_interface.0.name:                            <computed>
+      network_interface.0.network:                         "default"
+      network_interface.0.network_ip:                      <computed>
+      network_interface.0.subnetwork_project:              <computed>
+      project:                                             <computed>
+      scheduling.#:                                        <computed>
+      self_link:                                           <computed>
+      tags.#:                                              "1"
+      tags.1799682348:                                     "reddit-app"
+      tags_fingerprint:                                    <computed>
+      zone:                                                "europe-west1-b"
+
+  + google_compute_instance.app[1]
+      id:                                                  <computed>
+      boot_disk.#:                                         "1"
+      boot_disk.0.auto_delete:                             "true"
+      boot_disk.0.device_name:                             <computed>
+      boot_disk.0.disk_encryption_key_sha256:              <computed>
+      boot_disk.0.initialize_params.#:                     "1"
+      boot_disk.0.initialize_params.0.image:               "reddit-base"
+      can_ip_forward:                                      "false"
+      cpu_platform:                                        <computed>
+      create_timeout:                                      "4"
+      instance_id:                                         <computed>
+      label_fingerprint:                                   <computed>
+      machine_type:                                        "g1-small"
+      metadata.%:                                          "1"
+      metadata.ssh-keys:                                   "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+      metadata_fingerprint:                                <computed>
+      name:                                                "reddit-app-1"
+      network_interface.#:                                 "1"
+      network_interface.0.access_config.#:                 "1"
+      network_interface.0.access_config.0.assigned_nat_ip: <computed>
+      network_interface.0.access_config.0.nat_ip:          <computed>
+      network_interface.0.address:                         <computed>
+      network_interface.0.name:                            <computed>
+      network_interface.0.network:                         "default"
+      network_interface.0.network_ip:                      <computed>
+      network_interface.0.subnetwork_project:              <computed>
+      project:                                             <computed>
+      scheduling.#:                                        <computed>
+      self_link:                                           <computed>
+      tags.#:                                              "1"
+      tags.1799682348:                                     "reddit-app"
+      tags_fingerprint:                                    <computed>
+      zone:                                                "europe-west2-b"
+
+  + google_compute_target_pool.ruby_cluster
+      id:                                                  <computed>
+      health_checks.#:                                     <computed>
+      instances.#:                                         <computed>
+      name:                                                "ruby-cluster"
+      project:                                             <computed>
+      region:                                              <computed>
+      self_link:                                           <computed>
+      session_affinity:                                    "NONE"
+
+
+Plan: 6 to add, 0 to change, 0 to destroy.
+```
+
+неудачная - полный лог <https://pastebin.com/raw/s31P55TZ>
+
+```bash
+Error: Error applying plan:
+
+1 error(s) occurred:
+
+* google_compute_global_forwarding_rule.ruby-forwarding: 1 error(s) occurred:
+
+* google_compute_global_forwarding_rule.ruby-forwarding: Error creating Global Forwarding Rule: googleapi: Error 400: Invalid value for field 'resource.target': 'https://www.googleapis.com/compute/v1/projects/aidjek-infrastructure/regions/europe-west1/targetPools/ruby-cluster'. Invalid target type TARGET_POOL for forwarding rule in scope GLOBAL, invalid
+
+Terraform does not automatically rollback in the face of errors.
+Instead, your Terraform state file has been partially updated with
+any resources that successfully completed. Please address the error
+above and apply again to incrementally change your infrastructure.
+```
+
+### Additional work (*)
+
+при добавлении ещё одного ключа в metadata, он затирает предыдущее значение и оставляет только одно.
+
+```bash
+  metadata.ssh-keys: "appuser25:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n" => "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+  ```
+
+При добавлении новых значений в metadata не через terraform, то при запуске `terraform apply` он оставит только тот ключ, который у него последним указан в конфиге в разделе metadata.
+
+Смотри коммит [68d3a75].
+
+### Regular Work
+
+When we're using Input variables, we can destroy and create instance again, using all defined input variables.
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform destroy                    google_compute_firewall.firewall_puma: Refreshing state... (ID: allow-puma-default)
+google_compute_instance.app: Refreshing state... (ID: reddit-app)
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  - google_compute_firewall.firewall_puma
+
+  - google_compute_instance.app
+
+
+Plan: 0 to add, 0 to change, 2 to destroy.
+
+Do you really want to destroy all resources?
+  Terraform will destroy all your managed infrastructure, as shown above.
+  There is no undo. Only 'yes' will be accepted to confirm.
+
+  Enter a value: yes
+
+google_compute_firewall.firewall_puma: Destroying... (ID: allow-puma-default)
+google_compute_instance.app: Destroying... (ID: reddit-app)
+google_compute_firewall.firewall_puma: Still destroying... (ID: allow-puma-default, 10s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 10s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 20s elapsed)
+google_compute_firewall.firewall_puma: Still destroying... (ID: allow-puma-default, 20s elapsed)
+google_compute_firewall.firewall_puma: Destruction complete after 21s
+google_compute_instance.app: Still destroying... (ID: reddit-app, 30s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 40s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 50s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m0s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m10s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m20s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m30s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m40s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 1m50s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 2m0s elapsed)
+google_compute_instance.app: Still destroying... (ID: reddit-app, 2m10s elapsed)
+google_compute_instance.app: Destruction complete after 2m10s
+
+Destroy complete! Resources: 2 destroyed.
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform plan                       Refreshing Terraform state in-memory prior to plan...
+The refreshed state will be used to calculate this plan, but will not be
+persisted to local or remote state storage.
+
+
+------------------------------------------------------------------------
+
+An execution plan has been generated and is shown below.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  + google_compute_firewall.firewall_puma
+      id:                                                  <computed>
+      allow.#:                                             "1"
+      allow.931060522.ports.#:                             "1"
+      allow.931060522.ports.0:                             "9292"
+      allow.931060522.protocol:                            "tcp"
+      destination_ranges.#:                                <computed>
+      name:                                                "allow-puma-default"
+      network:                                             "default"
+      priority:                                            "1000"
+      project:                                             <computed>
+      self_link:                                           <computed>
+      source_ranges.#:                                     "1"
+      source_ranges.1080289494:                            "0.0.0.0/0"
+      target_tags.#:                                       "1"
+      target_tags.1799682348:                              "reddit-app"
+
+  + google_compute_instance.app
+      id:                                                  <computed>
+      boot_disk.#:                                         "1"
+      boot_disk.0.auto_delete:                             "true"
+      boot_disk.0.device_name:                             <computed>
+      boot_disk.0.disk_encryption_key_sha256:              <computed>
+      boot_disk.0.initialize_params.#:                     "1"
+      boot_disk.0.initialize_params.0.image:               "reddit-base"
+      can_ip_forward:                                      "false"
+      cpu_platform:                                        <computed>
+      create_timeout:                                      "4"
+      instance_id:                                         <computed>
+      label_fingerprint:                                   <computed>
+      machine_type:                                        "g1-small"
+      metadata.%:                                          "1"
+      metadata.ssh-keys:                                   "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+      metadata_fingerprint:                                <computed>
+      name:                                                "reddit-app"
+      network_interface.#:                                 "1"
+      network_interface.0.access_config.#:                 "1"
+      network_interface.0.access_config.0.assigned_nat_ip: <computed>
+      network_interface.0.access_config.0.nat_ip:          <computed>
+      network_interface.0.address:                         <computed>
+      network_interface.0.name:                            <computed>
+      network_interface.0.network:                         "default"
+      network_interface.0.network_ip:                      <computed>
+      network_interface.0.subnetwork_project:              <computed>
+      project:                                             <computed>
+      scheduling.#:                                        <computed>
+      self_link:                                           <computed>
+      tags.#:                                              "1"
+      tags.1799682348:                                     "reddit-app"
+      tags_fingerprint:                                    <computed>
+      zone:                                                "europe-west1-b"
+
+
+Plan: 2 to add, 0 to change, 0 to destroy.
+
+------------------------------------------------------------------------
+
+Note: You didn't specify an "-out" parameter to save this plan, so Terraform
+can't guarantee that exactly these actions will be performed if
+"terraform apply" is subsequently run.
+
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform apply --auto-approve=true  google_compute_firewall.firewall_puma: Creating...
+  allow.#:                  "" => "1"
+  allow.931060522.ports.#:  "" => "1"
+  allow.931060522.ports.0:  "" => "9292"
+  allow.931060522.protocol: "" => "tcp"
+  destination_ranges.#:     "" => "<computed>"
+  name:                     "" => "allow-puma-default"
+  network:                  "" => "default"
+  priority:                 "" => "1000"
+  project:                  "" => "<computed>"
+  self_link:                "" => "<computed>"
+  source_ranges.#:          "" => "1"
+  source_ranges.1080289494: "" => "0.0.0.0/0"
+  target_tags.#:            "" => "1"
+  target_tags.1799682348:   "" => "reddit-app"
+google_compute_instance.app: Creating...
+  boot_disk.#:                                         "" => "1"
+  boot_disk.0.auto_delete:                             "" => "true"
+  boot_disk.0.device_name:                             "" => "<computed>"
+  boot_disk.0.disk_encryption_key_sha256:              "" => "<computed>"
+  boot_disk.0.initialize_params.#:                     "" => "1"
+  boot_disk.0.initialize_params.0.image:               "" => "reddit-base"
+  can_ip_forward:                                      "" => "false"
+  cpu_platform:                                        "" => "<computed>"
+  create_timeout:                                      "" => "4"
+  instance_id:                                         "" => "<computed>"
+  label_fingerprint:                                   "" => "<computed>"
+  machine_type:                                        "" => "g1-small"
+  metadata.%:                                          "" => "1"
+  metadata.ssh-keys:                                   "" => "appuser:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+  metadata_fingerprint:                                "" => "<computed>"
+  name:                                                "" => "reddit-app"
+  network_interface.#:                                 "" => "1"
+  network_interface.0.access_config.#:                 "" => "1"
+  network_interface.0.access_config.0.assigned_nat_ip: "" => "<computed>"
+  network_interface.0.access_config.0.nat_ip:          "" => "<computed>"
+  network_interface.0.address:                         "" => "<computed>"
+  network_interface.0.name:                            "" => "<computed>"
+  network_interface.0.network:                         "" => "default"
+  network_interface.0.network_ip:                      "" => "<computed>"
+  network_interface.0.subnetwork_project:              "" => "<computed>"
+  project:                                             "" => "<computed>"
+  scheduling.#:                                        "" => "<computed>"
+  self_link:                                           "" => "<computed>"
+  tags.#:                                              "" => "1"
+  tags.1799682348:                                     "" => "reddit-app"
+  tags_fingerprint:                                    "" => "<computed>"
+  zone:                                                "" => "europe-west1-b"
+google_compute_instance.app: Still creating... (10s elapsed)
+google_compute_firewall.firewall_puma: Still creating... (10s elapsed)
+google_compute_instance.app: Still creating... (20s elapsed)
+google_compute_firewall.firewall_puma: Still creating... (20s elapsed)
+google_compute_firewall.firewall_puma: Creation complete after 23s (ID: allow-puma-default)
+google_compute_instance.app: Still creating... (30s elapsed)
+google_compute_instance.app: Still creating... (40s elapsed)
+google_compute_instance.app: Still creating... (50s elapsed)
+google_compute_instance.app: Provisioning with 'file'...
+google_compute_instance.app: Provisioning with 'remote-exec'...
+google_compute_instance.app (remote-exec): Connecting to remote host via SSH...
+google_compute_instance.app (remote-exec):   Host: 35.241.194.159
+google_compute_instance.app (remote-exec):   User: appuser
+google_compute_instance.app (remote-exec):   Password: false
+google_compute_instance.app (remote-exec):   Private key: true
+google_compute_instance.app (remote-exec):   SSH Agent: false
+google_compute_instance.app (remote-exec):   Checking Host Key: false
+google_compute_instance.app (remote-exec): Connected!
+google_compute_instance.app (remote-exec): Cloning into '/home/appuser/reddit'...
+google_compute_instance.app (remote-exec): remote: Enumerating objects: 308, done.
+google_compute_instance.app (remote-exec): Receiving objects:   0% (1/308)
+....
+google_compute_instance.app (remote-exec): Resolving deltas: 100% (167/167), done.
+google_compute_instance.app (remote-exec): Checking connectivity... done.
+google_compute_instance.app (remote-exec): Warning: the running version of Bundler is older than the version that created the lockfile. We suggest you upgrade to the latest version of Bundler by running `gem install bundler`.
+google_compute_instance.app (remote-exec):
+google_compute_instance.app (remote-exec): Fetching gem metadata from https://rubygems.org/.
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app (remote-exec): Fetching version metadata from https://rubygems.org/.
+google_compute_instance.app (remote-exec): .
+google_compute_instance.app: Still creating... (1m0s elapsed)
+google_compute_instance.app (remote-exec): Installing rake 12.0.0
+google_compute_instance.app (remote-exec): Installing net-ssh 4.1.0
+google_compute_instance.app (remote-exec): Installing bcrypt 3.1.11 with native extensions
+google_compute_instance.app (remote-exec): Installing bson 4.2.2 with native extensions
+google_compute_instance.app (remote-exec): Installing bson_ext 1.5.1 with native extensions
+google_compute_instance.app (remote-exec): Installing i18n 0.8.6
+google_compute_instance.app (remote-exec): Installing puma 3.10.0 with native extensions
+google_compute_instance.app: Still creating... (1m10s elapsed)
+google_compute_instance.app (remote-exec): Installing temple 0.8.0
+google_compute_instance.app (remote-exec): Installing tilt 2.0.8
+google_compute_instance.app (remote-exec): Installing json 2.1.0 with native extensions
+google_compute_instance.app (remote-exec): Installing mustermann 1.0.2
+google_compute_instance.app (remote-exec): Installing rack 2.0.5
+google_compute_instance.app (remote-exec): Using bundler 1.11.2
+google_compute_instance.app (remote-exec): Installing net-scp 1.2.1
+google_compute_instance.app (remote-exec): Installing mongo 2.4.3
+google_compute_instance.app (remote-exec): Installing haml 5.0.2
+google_compute_instance.app (remote-exec): Installing rack-protection 2.0.2
+google_compute_instance.app (remote-exec): Installing sshkit 1.14.0
+google_compute_instance.app (remote-exec): Installing sinatra 2.0.2
+google_compute_instance.app (remote-exec): Installing airbrussh 1.3.0
+google_compute_instance.app (remote-exec): Installing capistrano 3.9.0
+google_compute_instance.app (remote-exec): Installing capistrano-bundler 1.2.0
+google_compute_instance.app (remote-exec): Installing capistrano-rvm 0.1.2
+google_compute_instance.app (remote-exec): Installing capistrano3-puma 3.1.1
+google_compute_instance.app (remote-exec): Bundle complete! 11 Gemfile dependencies, 24 gems now installed.
+google_compute_instance.app (remote-exec): Use `bundle show [gemname]` to see where a bundled gem is installed.
+google_compute_instance.app (remote-exec): Post-install message from capistrano3-puma:
+
+google_compute_instance.app (remote-exec):     All plugins need to be explicitly installed with install_plugin.
+google_compute_instance.app (remote-exec):     Please see README.md
+google_compute_instance.app (remote-exec):   Created symlink from /etc/systemd/system/multi-user.target.wants/puma.service to /etc/systemd/system/puma.service.
+google_compute_instance.app: Creation complete after 1m17s (ID: reddit-app)
+
+Apply complete! Resources: 2 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+app_external_ip = 35.241.194.159
+```
+
+`terraform fmt` shows which files were changed
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform fmt                         main.tf
+variables.tf
+```
+
+if you have several metadata ssh_keys, terraform will use the last one:
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform apply --auto-approve=true   google_compute_instance.app: Refreshing state... (ID: reddit-app)
+google_compute_firewall.firewall_puma: Refreshing state... (ID: allow-puma-default)
+google_compute_instance.app: Modifying... (ID: reddit-app)
+  metadata.ssh-keys: "appuser1:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n" => "appuser25:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+google_compute_instance.app: Still modifying... (ID: reddit-app, 10s elapsed)
+google_compute_instance.app: Modifications complete after 13s (ID: reddit-app)
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+app_external_ip = 35.241.194.159
+```
+
+after insert new ssh key from web, terraform will rewrite it with current configuration
+
+```bash
+⋊> ~/P/O/D/g/a/terraform on terraform-1 ⨯ terraform apply --auto-approve=true   google_compute_instance.app: Refreshing state... (ID: reddit-app)
+google_compute_firewall.firewall_puma: Refreshing state... (ID: allow-puma-default)
+google_compute_instance.app: Modifying... (ID: reddit-app)
+  metadata.ssh-keys: "appuser25:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\nappuser_web:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser_web" => "appuser25:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uy2SzmovqakU6p9B05hzjv/+rd+TLETg1U1gQLVqAqdQQ8zcio7sViIo3aslDYXbX9R3S4sGrDtOpSKoY08SCjbHldXcsdru/HsmitZM/FDSnZoUbQA1EgZIobP93pIy202w0MR36cA6RjbHIDpwwlfSZazCAA90KngR6SLWKXiscxO4Wn7RgIo5gKWwRLryU20l+60dZlyozuZzizGXmk/vPMGK+6nG1DWrubgxTJbiTkg+Lvt3wGlHFSzJG1W3RDrpSVHMcif6WhyJWk1f8Q0DCs33m6o3h+KfWJwVNRpRMWuPISWS8JAmqWjLeYic/y9VV41Stfd3hSzWI2N9 appuser\n"
+google_compute_instance.app: Still modifying... (ID: reddit-app, 10s elapsed)
+google_compute_instance.app: Modifications complete after 12s (ID: reddit-app)
+
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+Outputs:
+
+app_external_ip = 35.241.194.159
+```
+
 ## HomeWork #5
 
 Create new instance, based on the image made by packer.
