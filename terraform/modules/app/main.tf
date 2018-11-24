@@ -1,11 +1,3 @@
-data "template_file" "puma_service" {
-  template = "${file("${path.module}/files/puma.service.template")}"
-
-  vars {
-    db_ip = "${var.db_ip}"
-  }
-}
-
 resource "google_compute_instance" "app" {
   name         = "reddit-app"
   machine_type = "g1-small"
@@ -30,14 +22,24 @@ resource "google_compute_instance" "app" {
     sshKeys = "appuser:${file(var.public_key_path)}"
   }
 
+  connection {
+    type        = "ssh"
+    user        = "appuser"
+    agent       = false
+    private_key = "${file(var.private_key_path)}"
+  }
+  provisioner "file" {
+    source      = "../modules/app/files/puma.service"
+    destination = "/tmp/puma.service"
+  }
   provisioner "remote-exec" {
     inline = [
-      "echo '${data.template_file.puma_service.rendered}' > /tmp/puma.service",
+      "echo 'export DATABASE_URL=${var.app_db_ip}' > /home/appuser/.bash_profile",
+      "chown appuser:appuser /home/appuser/.bash_profile"
     ]
   }
-
   provisioner "remote-exec" {
-    script = "${path.module}/files/deploy.sh"
+    script = "../modules/app/files/deploy.sh"
   }
 }
 
