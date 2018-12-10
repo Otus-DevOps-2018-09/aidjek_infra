@@ -2,6 +2,15 @@
 
 aidjek Infra repository
 
+## HomeWork #9
+
+Сделаны playbooks для настройки app, db и deploy ролей.
+Сделаны playbooks для provisioning packer образов.
+
+### Additional work (*) - HW9
+
+Для `inventory` в `ansible.cfg` используется динамическая реализация в скрипте `terraform_inventory.sh`. Анализируя состояние terraform, создаётся JSON, и мы можем не зависить от IP, который выдаёт GCP
+
 ## HomeWork #8
 
 ### Additional work (*) - HW8
@@ -19,7 +28,7 @@ aidjek Infra repository
 }
 ```
 
-А также для создания динамического inventory для Ansible из Terraform, можно использовать утилиту https://github.com/adammck/terraform-inventory
+А также для создания динамического inventory для Ansible из Terraform, можно использовать утилиту <https://github.com/adammck/terraform-inventory>
 
 ```bash
 ⋊> ~/P/O/D/g/a/ansible on ansible-1 ⨯ ansible all -m ping -i terraform_inventory.sh                                                         35.205.225.203 | SUCCESS => {
