@@ -2,6 +2,62 @@
 
 aidjek Infra repository
 
+## HomeWork #8
+
+### Additional work (*) - HW8
+
+благодаря скрипту мы можем сгенерировать динамический или использовать статический inventory.json.
+
+```bash
+⋊> ~/P/O/D/g/a/ansible on ansible-1 ⨯ ansible all -m ping -i inventory.sh      35.195.21.239 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+35.205.225.203 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+А также для создания динамического inventory для Ansible из Terraform, можно использовать утилиту https://github.com/adammck/terraform-inventory
+
+```bash
+⋊> ~/P/O/D/g/a/ansible on ansible-1 ⨯ ansible all -m ping -i terraform_inventory.sh                                                         35.205.225.203 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+35.195.21.239 | SUCCESS => {
+    "changed": false,
+    "ping": "pong"
+}
+```
+
+### Regular Work - HW8
+
+После удаления - playbook создаёт директорию заново.
+
+```bash
+⋊> ~/P/O/D/g/a/ansible on ansible-1 ⨯ ansible app -m command -a 'rm -rf ~/reddit'
+
+[WARNING]: Consider using the file module with state=absent rather than running rm.  If you need to use command because file is insufficient you can add warn=False to this
+command task or set command_warnings=False in ansible.cfg to get rid of this message.
+
+appserver | CHANGED | rc=0 >>
+
+⋊> ~/P/O/D/g/a/ansible on ansible-1 ⨯ ansible-playbook clone.yml
+
+PLAY [Clone] *******************************************************************************************************************************************************************
+
+TASK [Gathering Facts] *********************************************************************************************************************************************************
+ok: [appserver]
+
+TASK [Clone repo] **************************************************************************************************************************************************************
+changed: [appserver]
+
+PLAY RECAP *********************************************************************************************************************************************************************
+appserver                  : ok=2    changed=1    unreachable=0    failed=0
+```
+
 ## HomeWork #7
 
 ### Additional work (*) - HW7
@@ -15,7 +71,6 @@ aidjek Infra repository
 #### Terraform Provisioners
 
 В каждом из модулей db и app используются provisioners.
-Для настройки переменной `DATABASE_URL` добавлен шаблон для systemd unit `puma.service` в модуле app.
 В модуле db provisioner заменяет IP который использует MongoDB.
 
 ## HomeWork #6
@@ -394,7 +449,7 @@ above and apply again to incrementally change your infrastructure.
 
 Смотри коммит [68d3a75].
 
-### Regular Work
+### Regular Work - HW6
 
 When we're using Input variables, we can destroy and create instance again, using all defined input variables.
 
